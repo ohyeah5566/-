@@ -23,6 +23,12 @@ allprojects {
     }
 }
 
+ext{
+    mockitoVersion = "2.8.9"
+    gsonVersion = "2.8.5"
+    roomVersion = "2.2.0-rc01"
+}
+
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
