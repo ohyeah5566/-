@@ -39,13 +39,16 @@ class RestaurantDaoTest {
 
 
         // The loaded data contains the expected values
-        Assert.assertEquals(lists.get(0).rating,4.3,0.1)
+        lists[0].run {
+            Assert.assertEquals(rating,4.3,0.1)
+            Assert.assertEquals(location.latitude,25.0298581,0.000001)
+            Assert.assertEquals(location.longitude,121.5502276,0.000001)
+        }
     }
 
 
 
     companion object{
-        var DEFAULT_ID = "effc67519584719a0f52a13e8bf9e2c48e5cd1ad"
         var DEFAULT_RESTAURANT = Restaurant("{\n" +
                 "         \"geometry\": {\n" +
                 "            \"location\": {\n" +
