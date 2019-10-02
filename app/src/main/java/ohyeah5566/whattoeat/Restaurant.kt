@@ -37,7 +37,7 @@ data class Restaurant constructor(var result: String) {
             priceLevel = getInt("price_level")
             vicinity = getString("vicinity")
             placeId = getString("place_id")
-            photoReference = getString("photo_reference")
+            photoReference = getJSONArray("photos").getJSONObject(0).getString("photo_reference")
             with(location){
                 getJSONObject("geometry").getJSONObject("location").also {
                     latitude = it.getDouble("lat")

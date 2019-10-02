@@ -45,4 +45,7 @@ dependencies {
     androidTestImplementation "androidx.room:room-testing:$roomVersion"
     kapt "androidx.room:room-compiler:$roomVersion"
     androidTestImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+
+    implementation "com.github.bumptech.glide:glide:$glideVersion"
+    kapt "com.github.bumptech.glide:compiler:$glideVersion"
 }

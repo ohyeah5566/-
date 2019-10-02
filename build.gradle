@@ -27,6 +27,7 @@ ext{
     mockitoVersion = "2.8.9"
     gsonVersion = "2.8.5"
     roomVersion = "2.2.0-rc01"
+    glideVersion = "4.10.0"
 }
 
 task clean(type: Delete) {

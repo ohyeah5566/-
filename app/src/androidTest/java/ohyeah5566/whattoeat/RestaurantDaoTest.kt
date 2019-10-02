@@ -43,6 +43,7 @@ class RestaurantDaoTest {
             Assert.assertEquals(rating,4.3,0.1)
             Assert.assertEquals(location.latitude,25.0298581,0.000001)
             Assert.assertEquals(location.longitude,121.5502276,0.000001)
+            Assert.assertEquals(photoReference,"CmRaAAAAcrFpi7V-oPK9MnwGMUhpNZFlDg7zv00PNJp88boXyuCW1Kq9YIAsbEVygbVtO-5FDJkOgYlJvcyMeuOnXHzSZfbiJjzGC9ds10CsNN_foVdA8VDlWXOAvCKt2_UA9n3jEhDp5V3sjTUz9b73HYGGRVcLGhR_7190b10TiqayMDA7y2wApYy8Ow")
         }
     }
 
