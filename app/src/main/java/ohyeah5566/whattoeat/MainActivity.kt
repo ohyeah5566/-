@@ -7,12 +7,21 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        viewpager.adapter = ResaurantAdapter(this,list)
-
+        var adapter = RestaurantAdapter(this,list)
+        with(adapter){
+            viewpager.adapter = adapter
+            setOnButtonClick(object : RestaurantAdapter.OnButtonClick{
+                override fun goNextItem() {
+                    viewpager.setCurrentItem(viewpager.currentItem+1,true)
+                }
+            })
+        }
 
     }
 
@@ -122,6 +131,6 @@ class MainActivity : AppCompatActivity() {
                 "         \"user_ratings_total\": 1210,\n" +
                 "         \"vicinity\": \"No. 3號, Lane 144, Section 2, Jilong Road, Da’an District\"\n" +
                 "      }")
-        var list = listOf(restaurant1, restaurant2)
+        var list = listOf(restaurant1, restaurant2,restaurant1, restaurant2,restaurant1, restaurant2,restaurant1, restaurant2,restaurant1, restaurant2)
     }
 }

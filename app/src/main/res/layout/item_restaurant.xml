@@ -61,8 +61,7 @@
             app:layout_constraintRight_toLeftOf="@+id/btn_nope"
             app:layout_constraintTop_toBottomOf="@+id/tv_name"
             android:layout_marginRight="20dp"
-            android:onClick=""
-            tools:text="喜歡"/>
+            android:text="考慮"/>
 
     <Button
             android:id="@+id/btn_nope"
@@ -70,7 +69,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_name"
-            tools:text="略過"
+            android:text="略過"
             android:layout_marginRight="5dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
