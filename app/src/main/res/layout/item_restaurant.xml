@@ -35,12 +35,28 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_name"
             tools:text="5.0"/>
 
+    <RatingBar
+            android:id="@+id/rating_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:rating="2.6"
+            android:layout_marginLeft="3dp"
+            android:isIndicator="false"
+            style="?android:attr/ratingBarStyleSmall"
+            android:progressTint="@color/rating_normal"
+            android:progressBackgroundTint="@color/rating_Activated"
+            android:secondaryProgressTint="@color/rating_Activated"
+            app:layout_constraintLeft_toRightOf="@+id/tv_rating"
+            app:layout_constraintTop_toTopOf="@+id/tv_rating"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_rating"/>
+
     <TextView
             android:id="@+id/tv_rating_totals"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            app:layout_constraintLeft_toRightOf="@+id/tv_rating"
+            android:layout_marginLeft="3dp"
+            app:layout_constraintLeft_toRightOf="@+id/rating_bar"
             app:layout_constraintTop_toTopOf="@+id/tv_rating"
             tools:text="(999+)"/>
 
@@ -71,5 +87,27 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_name"
             android:text="略過"
             android:layout_marginRight="5dp"/>
+
+    <ImageView
+            android:id="@+id/location_marker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/ic_location_marker"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_nope"/>
+
+    <TextView
+            android:id="@+id/tv_address"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            app:layout_constraintLeft_toRightOf="@+id/location_marker"
+            app:layout_constraintBottom_toBottomOf="@+id/location_marker"
+            app:layout_constraintTop_toTopOf="@+id/location_marker"
+            app:layout_constraintRight_toRightOf="parent"
+            android:autoLink="map"
+            tools:text="信義路五段2號"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
