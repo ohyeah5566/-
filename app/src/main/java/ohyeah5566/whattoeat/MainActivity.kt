@@ -4,40 +4,33 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.activity_main.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
 
+    var count = 1
+
+    private val webService by lazy {
+        Retrofit.Builder()
+            .baseUrl("https://jsonplaceholder.typicode.com/")
+            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
+            .build().create(Webservice::class.java)
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val webservice by lazy {
-            Retrofit.Builder()
-                .baseUrl("https://jsonplaceholder.typicode.com/")
-                .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
-                .build().create(Webservice::class.java)
-        }
-
         btn_loadData.setOnClickListener {
-//            webservice.getTodo(1).execute().body()?.run {
-//                tv_message.text = "id = $id \ntitles = $titles \ncompleted = $completed"
-//            }
-            webservice.getTodo(2).enqueue(object: Callback<Todo>{
-                override fun onFailure(call: Call<Todo>, t: Throwable) {
-                }
-
-                override fun onResponse(call: Call<Todo>, response: Response<Todo>) {
-                    response.body()?.run {
-                        tv_message.text = "id = $id \ntitles = $titles \ncompleted = $completed"
-                    }
-                }
-            })
+            GlobalScope.launch (Dispatchers.Main){
+                var result = webService.getTodo(count++) //因為getTodo有加suspend 因此這行不是在uiThread執行
+                tv_message.text = result.toString()
+            }
         }
-
     }
 }
