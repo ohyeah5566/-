@@ -2,6 +2,9 @@ package ohyeah5566.whattoeat
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
@@ -12,14 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
 
-    var count = 1
-
-    private val webService by lazy {
-        Retrofit.Builder()
-            .baseUrl("https://jsonplaceholder.typicode.com/")
-            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
-            .build().create(Webservice::class.java)
-    }
+    private val mainViewModel by viewModels<MainViewModel>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,10 +23,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         btn_loadData.setOnClickListener {
-            GlobalScope.launch (Dispatchers.Main){
-                var result = webService.getTodo(count++) //因為getTodo有加suspend 因此這行不是在uiThread執行
-                tv_message.text = result.toString()
-            }
+            mainViewModel.getTodo()
         }
+
+        mainViewModel.result.observe(this, Observer {
+            tv_message.text = it.toString()
+        })
     }
 }
