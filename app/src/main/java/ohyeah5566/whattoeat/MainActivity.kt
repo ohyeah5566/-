@@ -15,12 +15,20 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
 
-    private val mainViewModel by viewModels<MainViewModel>()
+    private lateinit var mainViewModel : MainViewModel
 
+    private val webService by lazy {
+        Retrofit.Builder()
+            .baseUrl("https://jsonplaceholder.typicode.com/")
+            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
+            .build().create(Webservice::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        mainViewModel = MainViewModel(webService)
 
         btn_loadData.setOnClickListener {
             mainViewModel.getTodo()
