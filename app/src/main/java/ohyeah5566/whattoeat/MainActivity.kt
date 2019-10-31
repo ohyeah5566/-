@@ -2,20 +2,16 @@ package ohyeah5566.whattoeat
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var mainViewModel : MainViewModel
+    private lateinit var mainViewModel: MainViewModel
 
     private val webService by lazy {
         Retrofit.Builder()
@@ -28,7 +24,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        mainViewModel = MainViewModel(webService)
+        //測試可以直接 new MainViewModel(webService)
+        //不過在Activity用ViewModelProviders產生 可以讓onCreate被再次呼叫時取得原本的ViewModel
+        mainViewModel =
+            ViewModelProviders.of(this, ViewModelFactory(webService)).get(MainViewModel::class.java)
 
         btn_loadData.setOnClickListener {
             mainViewModel.getTodo()
