@@ -1,52 +1,55 @@
 package ohyeah5566.whattoeat
 
-import android.location.Location
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import org.json.JSONObject
+import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "Restaurant")
-data class Restaurant constructor(var result: String) {
+data class Restaurant constructor(
     @PrimaryKey
     @ColumnInfo(name = "id")
-    var id = ""
-    @ColumnInfo(name = "location")
-    var location = Location("")
+    var id: String = "",
+    @ColumnInfo(name = "geometry")
+    var geometry: Geometry?,
     @ColumnInfo(name = "name")
-    var name = ""
+    var name: String = "",
     @ColumnInfo(name = "rating")
-    var rating = 5.0
+    var rating: Double = 5.0,
     @ColumnInfo(name = "user_ratings_total")
-    var userRatingsTotal = 10
+    var userRatingsTotal: Int = 10,
     @ColumnInfo(name = "price_level")
-    var priceLevel = 0
+    var priceLevel: Int = 0,
     @ColumnInfo(name = "vicinity")
-    var vicinity = "" //地址
+    var vicinity: String = "", //地址
     @ColumnInfo(name = "place_id")
-    var placeId = "" //拿餐廳詳細資料
-    @ColumnInfo(name = "photo_reference")
-    var photoReference = "" //拿圖片 ?
+    @SerializedName("place_id")
+    var placeId: String = "", //拿餐廳詳細資料
+    @ColumnInfo(name = "photos")
+    val photos: List<Photos?> //Photos的結構是JSONArray的方式 因此這邊是用List<Photos>
+)
 
-    init {
-        JSONObject(result).run {
-            id = getString("id")
-            name = getString("name")
-            rating = getDouble("rating")
-            userRatingsTotal = getInt("user_ratings_total")
-            priceLevel = getInt("price_level")
-            vicinity = getString("vicinity")
-            placeId = getString("place_id")
-            photoReference = getJSONArray("photos").getJSONObject(0).getString("photo_reference")
-            with(location){
-                getJSONObject("geometry").getJSONObject("location").also {
-                    latitude = it.getDouble("lat")
-                    longitude= it.getDouble("lng")
-                }
-            }
+/**
+ * 用Gson遇到nested jsonObject 只要再創一個對應的物件名稱就可以轉了
+ *  "geometry": {
+ *      "location": {
+ *      "lat": 25.037628,
+ *      "lng": 121.5429943
+ *      }...下略
+ *  }
+ */
+data class Geometry(
+    val location: Location
+)
 
-        }
-    }
+data class Location(
+    val lat: Double = 0.0,
+    val lng: Double = 0.0
+)
 
-
-}
+data class Photos(
+    val height: Int,
+    val width: Int,
+    @SerializedName("photo_reference")
+    val photoReference: String
+)

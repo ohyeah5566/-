@@ -3,8 +3,9 @@ package ohyeah5566.whattoeat
 import androidx.room.Room
 import androidx.test.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4
+import com.google.gson.Gson
 import org.junit.After
-import org.junit.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -26,82 +27,30 @@ class RestaurantDaoTest {
     @After
     fun closeDb() {
         if (::database.isInitialized)
-        database.close()
+            database.close()
     }
 
     @Test
     fun insertRestaurantAndGetAll() {
-        // When inserting a task
-        database.restaurantDao().insertRestaurant(DEFAULT_RESTAURANT)
-
-        // When getting the task by id from the database
+        val gson = Gson()
+        var restaurant = gson.fromJson<Restaurant>(json, Restaurant::class.java)
+        database.restaurantDao().insertRestaurant(restaurant)
         val lists = database.restaurantDao().getAllRestaurants()
 
 
         // The loaded data contains the expected values
         lists[0].run {
-            Assert.assertEquals(rating,4.3,0.1)
-            Assert.assertEquals(location.latitude,25.0298581,0.000001)
-            Assert.assertEquals(location.longitude,121.5502276,0.000001)
-            Assert.assertEquals(photoReference,"CmRaAAAAcrFpi7V-oPK9MnwGMUhpNZFlDg7zv00PNJp88boXyuCW1Kq9YIAsbEVygbVtO-5FDJkOgYlJvcyMeuOnXHzSZfbiJjzGC9ds10CsNN_foVdA8VDlWXOAvCKt2_UA9n3jEhDp5V3sjTUz9b73HYGGRVcLGhR_7190b10TiqayMDA7y2wApYy8Ow")
+            assertEquals(25.037628, geometry?.location?.lat)
+            assertEquals(121.5429943, geometry?.location?.lng)
+            assertEquals(800, restaurant.photos.last()?.height)
+            assertEquals(1200, restaurant.photos.last()?.width)
         }
     }
 
 
-
-    companion object{
-        var DEFAULT_RESTAURANT = Restaurant("{\n" +
-                "         \"geometry\": {\n" +
-                "            \"location\": {\n" +
-                "               \"lat\": 25.0298581,\n" +
-                "               \"lng\": 121.5502276\n" +
-                "            },\n" +
-                "            \"viewport\": {\n" +
-                "               \"northeast\": {\n" +
-                "                  \"lat\": 25.0312070802915,\n" +
-                "                  \"lng\": 121.5515765802915\n" +
-                "               },\n" +
-                "               \"southwest\": {\n" +
-                "                  \"lat\": 25.0285091197085,\n" +
-                "                  \"lng\": 121.5488786197085\n" +
-                "               }\n" +
-                "            }\n" +
-                "         },\n" +
-                "         \"icon\": \"https://maps.gstatic.com/mapfiles/place_api/icons/restaurant-71.png\",\n" +
-                "         \"id\": \"effc67519584719a0f52a13e8bf9e2c48e5cd1ad\",\n" +
-                "         \"name\": \"TAJ Sonoma\",\n" +
-                "         \"opening_hours\": {\n" +
-                "            \"open_now\": true\n" +
-                "         },\n" +
-                "         \"photos\": [\n" +
-                "            {\n" +
-                "               \"height\": 290,\n" +
-                "               \"html_attributions\": [\n" +
-                "                  \"<a href=\\\"https://maps.google.com/maps/contrib/106014224472743494020/photos\\\">Sonoma 焱 牛排館 大安區牛排館美食推薦 台北美食推薦</a>\"\n" +
-                "               ],\n" +
-                "               \"photo_reference\": \"CmRaAAAAcrFpi7V-oPK9MnwGMUhpNZFlDg7zv00PNJp88boXyuCW1Kq9YIAsbEVygbVtO-5FDJkOgYlJvcyMeuOnXHzSZfbiJjzGC9ds10CsNN_foVdA8VDlWXOAvCKt2_UA9n3jEhDp5V3sjTUz9b73HYGGRVcLGhR_7190b10TiqayMDA7y2wApYy8Ow\",\n" +
-                "               \"width\": 635\n" +
-                "            }\n" +
-                "         ],\n" +
-                "         \"place_id\": \"ChIJpUZvnc2rQjQR5gNZmIUpqAo\",\n" +
-                "         \"plus_code\": {\n" +
-                "            \"compound_code\": \"2HH2+W3 Da’an District, Taipei City, Taiwan\",\n" +
-                "            \"global_code\": \"7QQ32HH2+W3\"\n" +
-                "         },\n" +
-                "         \"price_level\": 3,\n" +
-                "         \"rating\": 4.3,\n" +
-                "         \"reference\": \"ChIJpUZvnc2rQjQR5gNZmIUpqAo\",\n" +
-                "         \"scope\": \"GOOGLE\",\n" +
-                "         \"types\": [\n" +
-                "            \"restaurant\",\n" +
-                "            \"food\",\n" +
-                "            \"point_of_interest\",\n" +
-                "            \"establishment\"\n" +
-                "         ],\n" +
-                "         \"user_ratings_total\": 221,\n" +
-                "         \"vicinity\": \"No. 22號, Lane 81, Section 2, Dunhua South Road, Da’an District\"\n" +
-                "      }")
+    companion object {
+        val json =
+            """{"geometry": {"location": {"lat": 25.037628,"lng": 121.5429943},"viewport": {"northeast": {"lat": 25.0390619302915,"lng": 121.5443446302915},"southwest": {"lat": 25.0363639697085,"lng": 121.5416466697085}}},"icon": "https://maps.gstatic.com/mapfiles/place_api/icons/restaurant-71.png","id": "cfbf752163976570a3e02337dd12f01d4ab44057","name": "花園大道(自助餐) Park Avenue-台北福華大飯店","opening_hours": {"open_now": false},"photos": [{"height": 800,"html_attributions": ["<a href=\"https://maps.google.com/maps/contrib/115557320280344157714/photos\">花園大道自助餐 Park Avenue- 台北福華大飯店</a>"],"photo_reference": "CmRaAAAAm9Jg9BUbpleOfAFUwI85UjmQh4QGb-2YAK5tk_oi1cMgliTpzeeRuaJu4ipWFps5Xy-ZhFM50L2iu2kKoUo7Ip-xe9j48aZq7qPHu1QqaH12rHT9LzRAoQC7i9Jv7KBpEhALgROVKOqbEEfcE5R4kTxIGhS4qRLq5Vbq1C1uSsIPH-Q9NrwJiQ","width": 1200}],"place_id": "ChIJRW2USNGrQjQR7bfTlD-BGjo","plus_code": {"compound_code": "2GQV+35 台灣台北市大安區","global_code": "7QQ32GQV+35"},"price_level": 2,"rating": 4.1,"reference": "ChIJRW2USNGrQjQR7bfTlD-BGjo","scope": "GOOGLE","types": ["restaurant","food","point_of_interest","establishment"],"user_ratings_total": 439,"vicinity": "大安區仁愛路三段160號4樓"}"""
     }
-
 
 }
