@@ -28,7 +28,7 @@ class RestaurantAdapter(private val context: Context, private val list:List<Rest
             tv_rating_totals.text = "(${restaurant.userRatingsTotal})"
             with(cover){
                 Glide.with(context)
-                    .load("https://maps.googleapis.com/maps/api/place/photo?maxwidth=1080&photoreference=${restaurant.photoReference}&key=AIzaSyDoeMyPmVAF8LFkr5oATdAVOcL7ddqsfUU")
+                    .load("https://maps.googleapis.com/maps/api/place/photo?maxwidth=1080&photoreference=${restaurant.photos?.last()?.photoReference}&key=AIzaSyDoeMyPmVAF8LFkr5oATdAVOcL7ddqsfUU")
                     .into(this)
             }
             with(tv_address){
