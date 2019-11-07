@@ -2,7 +2,7 @@ package ohyeah5566.whattoeat
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.google.gson.Gson
+import androidx.lifecycle.Observer
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Retrofit
@@ -11,9 +11,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
 
-    val restaurantService by lazy {
+    private val restaurantService by lazy {
         Retrofit.Builder()
-            .baseUrl("https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyDoeMyPmVAF8LFkr5oATdAVOcL7ddqsfUU")
+            .baseUrl("https://maps.googleapis.com/maps/api/place/nearbysearch/")
             .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
             .build().create(RestaurantService::class.java)
     }
@@ -23,15 +23,21 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-//        var adapter = RestaurantAdapter(this,list)
-//        with(adapter){
-//            viewpager.adapter = adapter
-//            setOnButtonClick(object : RestaurantAdapter.OnButtonClick{
-//                override fun goNextItem() {
-//                    viewpager.setCurrentItem(viewpager.currentItem+1,true)
-//                }
-//            })
-//        }
+        val viewModel = MainViewModel(restaurantService)
+
+        viewModel.restaurants.observe(this, Observer {
+            var adapter = RestaurantAdapter(this, it)
+            with(adapter) {
+                viewpager.adapter = adapter
+                setOnButtonClick(object : RestaurantAdapter.OnButtonClick {
+                    override fun goNextItem() {
+                        viewpager.setCurrentItem(viewpager.currentItem + 1, true)
+                    }
+                })
+            }
+        })
+
+        viewModel.getRestaurant()
 
     }
 }

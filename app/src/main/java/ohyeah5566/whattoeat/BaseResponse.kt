@@ -6,5 +6,7 @@ data class BaseResponse(
     @SerializedName("next_page_token")
     val nextPageToken: String,
     val results: List<Restaurant>,
-    val status: String
+    val status: String,
+    @SerializedName("error_message")
+    val errorMessage: String
 )
